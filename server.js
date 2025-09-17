@@ -1,12 +1,30 @@
 // server.js
 import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config(); // loads variables from .env
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// test route
+// Middleware to parse JSON
+app.use(express.json());
+
+// Connect to MongoDB Atlas
+mongoose.connect(process.env.MONGO_URI, { 
+  useNewUrlParser: true, 
+  useUnifiedTopology: true 
+})
+.then(() => console.log(" Connected to MongoDB Atlas"))
+.catch(err => {
+  console.error(" MongoDB connection error:", err);
+  process.exit(1); // stop server if DB connection fails
+});
+
+// Test route
 app.get("/", (req, res) => {
-  res.send("Hello from mighka backend");
+  res.send("Hello from mighka backend with MongoDB!");
 });
 
 app.listen(PORT, () => {
