@@ -2,6 +2,11 @@
 import express from "express";
 import mongoose from "mongoose";
 import Client from "./models/client.js";
+import property from "./models/property.js";
+import job from "./models/job.js";
+import clientRoutes from "./routes/clients.js";
+import propertyRoutes from "./routes/properties.js";
+import jobRoutes from "./routes/jobs.js";
 import dotenv from "dotenv";
 
 dotenv.config(); // loads variables from .env
@@ -11,6 +16,10 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON
 app.use(express.json());
+app.use("/clients", clientRoutes);
+app.use("/properties", propertyRoutes);
+app.use("/jobs", jobRoutes);
+
 
 // Connect to MongoDB Atlas
 mongoose.connect(process.env.MONGO_URI, { 
@@ -29,15 +38,6 @@ app.get("/", (req, res) => {
   res.send("Hello from mighka backend with MongoDB!");
 });
 
-// READ: get all clients
-app.get("/clients", async (req, res) => {
-  try {
-    const clients = await Client.find();
-    res.json(clients);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
 
 app.listen(PORT, () => {
   console.log(` Server running on port ${PORT}`);
