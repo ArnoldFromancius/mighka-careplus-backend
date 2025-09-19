@@ -1,6 +1,7 @@
 // server.js
 import express from "express";
 import mongoose from "mongoose";
+import Client from "./models/client.js";
 import dotenv from "dotenv";
 
 dotenv.config(); // loads variables from .env
@@ -22,9 +23,20 @@ mongoose.connect(process.env.MONGO_URI, {
   process.exit(1); // stop server if DB connection fails
 });
 
+
 // Test route
 app.get("/", (req, res) => {
   res.send("Hello from mighka backend with MongoDB!");
+});
+
+// READ: get all clients
+app.get("/clients", async (req, res) => {
+  try {
+    const clients = await Client.find();
+    res.json(clients);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.listen(PORT, () => {
