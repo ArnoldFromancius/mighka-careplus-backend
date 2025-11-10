@@ -23,11 +23,18 @@ app.use("/jobs", jobRoutes);
 
 // Connect to MongoDB Atlas
 mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log(" Connected to MongoDB Atlas"))
+.then(() => {
+	console.log(" Connected to MongoDB Atlas.");
+})
 .catch(err => {
   console.error(" MongoDB connection error:", err);
   process.exit(1); // stop server if DB connection fails
 });
+//Show actual database selected
+mongoose.connection.on("connected", () => {
+  console.log("Connected to DB:", mongoose.connection.name);
+});
+
 
 
 // Test route

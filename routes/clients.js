@@ -1,31 +1,39 @@
+// routes/clients.js
 import express from "express";
 import Client from "../models/client.js";
 
 const router = express.Router();
 
-// READ all clients
+// GET all clients
 router.get("/", async (req, res) => {
-  const clients = await Client.find();
-  res.json(clients);
+  try {
+    const clients = await Client.find();
+    console.log("Fetched clients:", clients);
+    res.json(clients);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
-// CREATE a client
+// POST a new client
 router.post("/", async (req, res) => {
-  const newClient = new Client(req.body);
-  await newClient.save();
-  res.status(201).json(newClient);
-});
-
-// UPDATE a client
-router.put("/:id", async (req, res) => {
-  const updatedClient = await Client.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.json(updatedClient);
+  try {
+    const newClient = new Client(req.body);
+    const savedClient = await newClient.save();
+    res.status(201).json(savedClient);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 });
 
 // DELETE a client
 router.delete("/:id", async (req, res) => {
-  await Client.findByIdAndDelete(req.params.id);
-  res.json({ message: "Client deleted" });
+  try {
+    await Client.findByIdAndDelete(req.params.id);
+    res.json({ message: "Client deleted" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 export default router;
