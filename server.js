@@ -1,6 +1,7 @@
 // server.js
 import express from "express";
 import mongoose from "mongoose";
+import authRoutes from './routes/auth.js';
 import Client from "./models/client.js";
 import property from "./models/property.js";
 import job from "./models/job.js";
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use("/clients", clientRoutes);
 app.use("/properties", propertyRoutes);
 app.use("/jobs", jobRoutes);
+app.use('/auth', authRoutes);
 
 
 // Connect to MongoDB Atlas
