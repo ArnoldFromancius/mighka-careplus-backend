@@ -41,7 +41,7 @@ mongoose.connection.on("connected", () => {
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("Hello from mighka backend with MongoDB!");
+  res.send("Connected to Mighka Backend!");
 });
 
 
